@@ -1,0 +1,27 @@
+.PHONY: all release clean run
+
+CC = gcc
+CFLAGS_DEBUG = -g -O0 -Wall -Wextra
+CFLAGS_RELEASE = -O2 -DNDEBUG
+LDFLAGS = -luser32 -lgdi32 -lxinput
+OBJ = game.o
+EXE = game.exe
+
+all: $(EXE)
+
+release: CFLAGS = $(CFLAGS_RELEASE)
+release: clean $(EXE)
+
+$(EXE): $(OBJ)
+	$(CC) -o $(EXE) $(OBJ) $(LDFLAGS)
+	@echo Build complete: $(EXE)
+
+$(OBJ): game.c
+	$(CC) -c $(CFLAGS_DEBUG) -o $(OBJ) game.c
+
+clean:
+	rm -f $(OBJ) $(EXE) *.o *.exe
+	@echo Clean complete
+
+run: $(EXE)
+	./$(EXE)
